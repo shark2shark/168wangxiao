@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         168网校刷课
 // @namespace    http://tampermonkey.net/
-// @version      2.0
+// @version      2.1
 // @description  本插件仅限学习交流使用，禁止商业使用!
 // @author       original
 // @grant        none
@@ -14,9 +14,6 @@
 
     // 学期
     var semester = '';
-
-    // 强制做题
-    var compulsory = true;
 
     // 视频从头播放
     var videoScratch = false;
@@ -125,8 +122,8 @@
             if (0 < taskQueue.video.length) {
                 let video = taskQueue.video.shift();
                 let videock = "video-"+video.chapterid;
-                localStorage.setItem("kcID", video.kcid);
-                localStorage.setItem("chapterid", video.chapterid);
+                localStorage.setItem("stuKcId", video.kcid);
+                localStorage.setItem("stuChapterId", video.chapterid);
                 if (null == taskExecQueue.getItem(videock)) {
                     // 任务数量 + 1
                     taskExecQueue.setLen('video', 1);
@@ -146,8 +143,8 @@
             {
                 let chapter = taskQueue.chapter.shift();
                 let chapterck = "chapter-"+chapter.chapterid;
-                localStorage.setItem("kcID", chapter.kcid);
-                localStorage.setItem("chapterid", chapter.chapterid);
+                localStorage.setItem("stuKcId", chapter.kcid);
+                localStorage.setItem("stuChapterId", chapter.chapterid);
                 if (null == taskExecQueue.getItem(chapterck)) {
                     // 任务数量 + 1
                     taskExecQueue.setLen('chapter', 1);
@@ -187,7 +184,7 @@
             location.href = uriHashMap.learning_center
 
         }
-    }, 3000);
+    }, 5000);
     scheduledTasks.push(monitorTaskStatus)
 
     // 初始化控制框
@@ -272,7 +269,7 @@
                     msg("正在学习...")
                     msg('正在跳转至：'+list[i].name)
                     autoExecList.push(courseDetails)
-                    location.href = uriHashMap.course_details+'?id='+list[i].plan_id+'&state=1';
+                    location.href = uriHashMap.course_details+'?id='+list[i].plan_id+'&state=0';
                     break;
                 }
             }
@@ -529,10 +526,10 @@ function curl(uri, param, func) {
     let host = "https://xatu.168wangxiao.com/other/student/";
     fetch(host + uri, {
         headers: {
-            "authorization": localStorage.getItem('token'),
+            "authorization": localStorage.getItem('stuToken'),
             "content-type": "application/json",
         },
-        body: JSON.stringify(Object.assign({token: localStorage.getItem('token')}, param)),
+        body: JSON.stringify(Object.assign(param)),
         method: "POST",
     })
         .then(response => response.json())
