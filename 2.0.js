@@ -139,7 +139,7 @@
             // 答题 - 视频放完或小于3个视频任务再答题
             if (!taskQueue.video.length
                 && 0 < taskQueue.chapter.length
-                && 3 >= taskExecQueue.getLen('video'))
+                && 5 >= taskExecQueue.getLen('video'))
             {
                 let chapter = taskQueue.chapter.shift();
                 let chapterck = "chapter-"+chapter.chapterid;
@@ -184,7 +184,7 @@
             location.href = uriHashMap.learning_center
 
         }
-    }, 5000);
+    }, 4300);
     scheduledTasks.push(monitorTaskStatus)
 
     // 初始化控制框
