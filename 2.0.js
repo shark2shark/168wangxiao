@@ -119,7 +119,8 @@
         if (!taskLock) {
             taskLock = true;
             // 播放视频
-            if (0 < taskQueue.video.length) {
+            // 最多打开13个视频窗口
+            if (0 < taskQueue.video.length && 13 > taskExecQueue.getLen('video')) {
                 let video = taskQueue.video.shift();
                 let videock = "video-"+video.chapterid;
                 localStorage.setItem("stuKcId", video.kcid);
